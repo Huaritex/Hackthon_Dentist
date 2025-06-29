@@ -1,36 +1,36 @@
 import React from 'react';
 import GridMotion from './GridMotion';
 
-const items = [
-  'Item 1',
-  <div key='jsx-item-1'>Custom JSX Content</div>,
-  'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'Item 2',
-  <div key='jsx-item-2'>Custom JSX Content</div>,
-  'Item 4',
-  <div key='jsx-item-2'>Custom JSX Content</div>,
-  'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'Item 5',
-  <div key='jsx-item-2'>Custom JSX Content</div>,
-  'Item 7',
-  <div key='jsx-item-2'>Custom JSX Content</div>,
-  'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'Item 8',
-  <div key='jsx-item-2'>Custom JSX Content</div>,
-  'Item 10',
-  <div key='jsx-item-3'>Custom JSX Content</div>,
-  'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'Item 11',
-  <div key='jsx-item-2'>Custom JSX Content</div>,
-  'Item 13',
-  <div key='jsx-item-4'>Custom JSX Content</div>,
-  'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'Item 14',
+// Usamos las 5 imágenes y las repetimos para llenar todos los huecos
+const imageNames = [
+  'Imagen_1.jpeg',
+  'Imagen_2.jpeg',
+  'Imagen_3.jpeg',
+  'Imagen_4.jpeg',
+  'Imagen_5.jpeg',
 ];
 
-const GridMotionBackground = () => (
+// Creamos un array de URLs de imágenes en vez de elementos <img />
+const items = Array.from({ length: 25 }, (_, i) =>
+  `/assets/images/${imageNames[i % imageNames.length]}`
+);
+
+const GridMotionBackground = ({ opaque = false }) => (
   <div className="fixed inset-0 w-screen h-screen z-0">
     <GridMotion items={items} gradientColor="#0B132B" />
+    {opaque && (
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0,0,0,0.5)', // Puedes ajustar la opacidad aquí
+          zIndex: 1,
+        }}
+      />
+    )}
   </div>
 );
 

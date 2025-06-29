@@ -1,24 +1,59 @@
+// src/pages/HomePage.jsx  (o donde lo tengas)
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import InteractiveBackground from '../components/InteractiveBackground';
+import { motion } from 'framer-motion';
 
 const HomePage = () => {
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      <InteractiveBackground />
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
-        <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-fade-in-down">
-          DentiScan <span className="text-[#3A86FF]">IA</span>
-        </h1>
-        <p className="text-lg md:text-2xl mb-8 max-w-3xl animate-fade-in-up">
-          Tu Salud Dental, Analizada con Inteligencia Artificial. Sube una imagen y recibe un análisis preliminar en segundos.
-        </p>
-        <Link to="/registro">
-          <button className="bg-[#3A86FF] hover:bg-[#2a75e8] text-white font-bold py-3 px-8 rounded-full text-xl transition-transform transform hover:scale-105 duration-300">
-            Comenzar Análisis Gratuito
-          </button>
-        </Link>
-      </div>
+    // Este div ahora es el contenedor principal del contenido.
+    // Ocupa toda la pantalla y centra todo vertical y horizontalmente.
+    <div className="flex flex-col items-center justify-center w-full h-full text-center px-4">
+      
+      {/* El título principal */}
+      <motion.h1
+        className="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-2xl text-gray-900"
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
+        DentiScan <span className="text-[#3A86FF]">IA</span>
+      </motion.h1>
+
+      {/* La frase de bienvenida (la que mencionaste) */}
+      <motion.p
+        className="text-2xl md:text-3xl mb-6 max-w-3xl font-light text-gray-700 drop-shadow-xl" // Usamos font-light para que la frase principal resalte más
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+      >
+        Cuidar tu sonrisa es cuidar de quienes te rodean.<br />
+        <span className="font-semibold text-gray-900">La salud comienza con una sonrisa compartida.</span>
+      </motion.p>
+      
+      {/* El subtítulo descriptivo */}
+      <motion.p
+        className="text-lg md:text-xl mb-8 max-w-2xl text-gray-600"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.7, ease: 'easeOut' }}
+      >
+        Tu salud dental, analizada con inteligencia artificial. Sube una imagen y recibe un análisis preliminar en segundos.
+      </motion.p>
+
+      {/* El botón de llamada a la acción */}
+      <Link to="/register"> {/* Asegúrate que la ruta sea /register o la que definiste */}
+        <motion.button
+          className="bg-[#3A86FF] hover:bg-[#2a75e8] text-white font-bold py-3 px-8 rounded-full text-xl transition-transform transform duration-300 shadow-lg shadow-blue-500/30"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 1.1, type: "spring", stiffness: 120 }}
+        >
+          Comenzar Análisis
+        </motion.button>
+      </Link>
     </div>
   );
 };
