@@ -1,6 +1,40 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { Link, useNavigate } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
+
+const lightTheme = {
+  body: '#F0F2F5',
+  formBg: 'white',
+  text: '#24135a',
+  primary: '#6041bf',
+  primaryDark: '#24135a',
+  inputBg: 'white',
+  inputBorder: '#6041bf',
+  inputText: '#24135a',
+  placeholder: '#6041bf',
+  hover: {
+    inputBg: '#6041bf',
+    inputText: 'white',
+    borderColor: 'white',
+  }
+};
+
+const darkTheme = {
+  body: '#0a0a0a', // Fondo principal casi negro
+  formBg: '#1a1a1a', // Fondo del formulario gris muy oscuro
+  text: '#E0E0E0',
+  primary: '#6041bf', // Morado como color de acento
+  primaryDark: '#24135a', // Morado oscuro
+  inputBg: '#2a2a2a',
+  inputBorder: '#6041bf', // Borde morado
+  inputText: 'white',
+  placeholder: '#888888',
+  hover: {
+    inputBg: '#6041bf', // Fondo morado en hover
+    inputText: 'white',
+    borderColor: 'white',
+  }
+};
 
 const RegisterPage = ({ setOpaque }) => {
   const [formData, setFormData] = useState({
@@ -11,7 +45,12 @@ const RegisterPage = ({ setOpaque }) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState('dark');
   const navigate = useNavigate();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,60 +98,126 @@ const RegisterPage = ({ setOpaque }) => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#0B132B]">
-      <StyledWrapper>
-        <form className="form" onSubmit={handleSubmit}>
-          <div id="login-area">
-            <p>AYUDA CON LOS DATOS PARA ANALISIS</p>
-          </div>
+    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+      <PageWrapper>
+        <Link to="/" className="home-button">
+          Volver al Inicio
+        </Link>
+        <button onClick={toggleTheme} className="theme-toggle">
+          {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
+        </button>
+        <StyledWrapper>
+          <form className="form" onSubmit={handleSubmit}>
+            <div id="login-area">
+              <p>DATOS PARA ANÁLISIS</p>
+            </div>
+            
+            {/* Barra estática para el título */}
+            <div className="title-bg" />
 
-          <div id="name-area">
-            <input placeholder="NOMBRE COMPLETO" id="name" name="name" className="input" type="text" value={formData.name} onChange={handleInputChange} required />
-          </div>
+            <div id="name-area">
+              <input placeholder="NOMBRE COMPLETO" id="name" name="name" className="input" type="text" value={formData.name} onChange={handleInputChange} required />
+            </div>
 
-          <div id="email-area">
-            <input placeholder="EMAIL" id="email" name="email" className="input" type="email" value={formData.email} onChange={handleInputChange} required />
-          </div>
+            <div id="email-area">
+              <input placeholder="EMAIL" id="email" name="email" className="input" type="email" value={formData.email} onChange={handleInputChange} required />
+            </div>
 
-          <div id="birthdate-area">
-            <input placeholder="FECHA DE NACIMIENTO" id="birthDate" name="birthDate" className="input" type="text" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={formData.birthDate} onChange={handleInputChange} required />
-          </div>
+            <div id="birthdate-area">
+              <input placeholder="FECHA DE NACIMIENTO" id="birthDate" name="birthDate" className="input" type="text" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={formData.birthDate} onChange={handleInputChange} required />
+            </div>
 
-          <div id="image-area">
-            <label htmlFor="dentalImage">
-              {imagePreview ? <img src={imagePreview} alt="Preview" /> : 'Subir Imagen Dental'}
-            </label>
-            <input id="dentalImage" type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
-          </div>
+            <div id="image-area">
+              <label htmlFor="dentalImage">
+                {imagePreview ? <img src={imagePreview} alt="Preview" /> : 'Subir Imagen Dental'}
+              </label>
+              <input id="dentalImage" type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
+            </div>
 
-          <div id="submit-area">
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? 'Analizando...' : 'Enviar para Análisis'}
-            </button>
-          </div>
+            <div id="submit-area">
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? 'Analizando...' : 'Enviar para Análisis'}
+              </button>
+            </div>
 
-          <div id="background-color" />
-          <div id="whitefilter" />
-        </form>
-      </StyledWrapper>
-    </div>
+            {/* Barra animada que se mueve */}
+            <div id="moving-bg" />
+            <div id="whitefilter" />
+          </form>
+        </StyledWrapper>
+      </PageWrapper>
+    </ThemeProvider>
   );
 };
+
+const PageWrapper = styled.div`
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.body};
+  position: relative;
+  transition: background-color 0.3s ease;
+
+  .home-button, .theme-toggle {
+    position: absolute;
+    top: 1rem;
+    z-index: 100;
+    padding: 0.5rem 1.5rem; /* Más padding horizontal */
+    border-radius: 10px; /* Bordes menos redondeados */
+    background: ${({ theme }) => theme.formBg};
+    color: ${({ theme }) => theme.text};
+    border: none; /* Quitamos el borde */
+    cursor: pointer;
+    font-weight: 600; /* Un poco más grueso */
+    text-transform: uppercase; /* Mayúsculas */
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    text-decoration: none;
+    /* Sombra dinámica según el tema */
+    box-shadow: ${({ theme }) => theme.body === '#F0F2F5' 
+      ? '0 8px 15px rgba(0, 0, 0, 0.1)' 
+      : '0 8px 15px rgba(255, 255, 255, 0.1)'};
+
+    &:hover {
+      background: ${({ theme }) => theme.primary};
+      color: ${({ theme }) => theme.formBg};
+      transform: translateY(-2px); /* Efecto de levantamiento */
+      box-shadow: ${({ theme }) => theme.body === '#F0F2F5' 
+        ? '0 12px 20px rgba(0, 0, 0, 0.2)' 
+        : '0 12px 20px rgba(255, 255, 255, 0.2)'};
+    }
+
+    &:active {
+      transform: translateY(0);
+      scale: 0.95;
+    }
+  }
+
+  .home-button {
+    left: 1rem;
+  }
+
+  .theme-toggle {
+    right: 1rem;
+  }
+`;
 
 const StyledWrapper = styled.div`
   .form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
-    width: 35em; /* Ancho aumentado para ser más horizontal */
+    background-color: ${({ theme }) => theme.formBg};
+    width: 35em;
     height: auto;
     padding-bottom: 2em;
-    border: 2px solid #24135a;
+    border: 2px solid ${({ theme }) => theme.primaryDark};
     border-bottom-left-radius: 1.5em;
     border-top-right-radius: 1.5em;
     box-shadow:
-      -10px 0px 0px #24135a,
+      -10px 0px 0px ${({ theme }) => theme.primaryDark},
       -10px 5px 5px rgb(0, 0, 0, 0.2);
     overflow: hidden;
     position: relative;
@@ -138,30 +243,15 @@ const StyledWrapper = styled.div`
 
   #login-area {
     height: 3.5em;
-    color: white;
+    color: ${({ theme }) => theme.formBg};
     padding: 0;
   }
 
   #login-area p {
-    top: 0.35em;
     font-size: 1.5em;
     font-weight: bold;
     position: absolute;
     z-index: 2;
-  }
-
-  #login-area #behind {
-    top: 60%;
-    font-size: 1em;
-    font-weight: bold;
-    position: absolute;
-    z-index: 1;
-  }
-
-  #behind {
-    position: absolute;
-    left: 1em;
-    color: #6041bf;
   }
 
   #name-area, #email-area, #birthdate-area {
@@ -171,7 +261,9 @@ const StyledWrapper = styled.div`
 
   #name-area input, #email-area input, #birthdate-area input {
     width: 100%;
-    border: 2px solid #6041bf;
+    background-color: ${({ theme }) => theme.inputBg};
+    border: 2px solid ${({ theme }) => theme.inputBorder};
+    color: ${({ theme }) => theme.inputText};
     border-radius: 0.5em;
     height: 2.5em;
     padding-left: 1em;
@@ -192,10 +284,10 @@ const StyledWrapper = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
-    border: 2px dashed #6041bf;
+    border: 2px dashed ${({ theme }) => theme.inputBorder};
     border-radius: 0.5em;
     cursor: pointer;
-    color: #6041bf;
+    color: ${({ theme }) => theme.placeholder};
     font-weight: bold;
     transition: all 0.25s ease;
   }
@@ -213,27 +305,107 @@ const StyledWrapper = styled.div`
   }
 
   #submit-area button {
+    position: relative; /* Requerido para posicionar los pseudo-elementos */
+    background-color: transparent;
+    color: transparent;
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 10px;
     width: 100%;
-    border: 2px solid #6041bf;
-    border-radius: 0.5em;
-    height: 2.5em;
-    font-size: 0.95em;
-    transition: all 0.25s ease;
-    color: white;
-    font-weight: bold;
-    background-color: #6041bf;
-    box-shadow: 0px 5px 5px -3px rgb(0, 0, 0, 0.2);
+    height: 60px;
+    border: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: ${({ theme }) => theme.body === '#F0F2F5' 
+      ? '0 10px 20px rgba(0, 0, 0, 0.2)' 
+      : '0 10px 20px rgba(255, 255, 255, 0.1)'};
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
   }
 
-  #background-color {
+  /* Propiedades comunes para ambas capas de texto */
+  #submit-area button::before,
+  #submit-area button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  }
+
+  /* Capa que se muestra en hover (¡Listo!) */
+  #submit-area button::before {
+    content: "¡Listo!";
+    background: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.formBg};
+    transform: translateY(100%); /* Empieza abajo, fuera de la vista */
+  }
+
+  /* Capa que se muestra por defecto (Enviar...) */
+  #submit-area button::after {
+    content: "Enviar para Análisis";
+    background-color: ${({ theme }) => theme.formBg};
+    color: ${({ theme }) => theme.primary};
+    transform: translateY(0); /* Empieza visible */
+  }
+
+  #submit-area button:hover::before {
+    transform: translateY(0); /* Se desliza hacia adentro */
+  }
+
+  #submit-area button:hover::after {
+    transform: translateY(-100%); /* Se desliza hacia afuera */
+  }
+
+  #submit-area button:focus {
+    outline: none;
+  }
+
+  #submit-area button:active {
+    scale: 0.95;
+  }
+
+  /* Estilo para el estado de carga */
+  #submit-area button:disabled {
+    color: white;
+    background-color: #888;
+    cursor: not-allowed;
+  }
+
+  #submit-area button:disabled::before,
+  #submit-area button:disabled::after {
+    content: none; /* Ocultamos los pseudo-elementos al cargar */
+  }
+
+
+  /* Barra de fondo estática para el título */
+  .title-bg {
     width: 100%;
     height: 3.5em;
-    background-color: #6041bf;
+    background-color: ${({ theme }) => theme.primary};
+    position: absolute;
+    top: 0em;
+    z-index: 1;
+    box-shadow: inset 5px 0px ${({ theme }) => theme.primaryDark};
+  }
+
+  /* Barra de fondo animada */
+  #moving-bg {
+    width: 100%;
+    height: 3.5em;
+    background-color: ${({ theme }) => theme.primary};
     position: absolute;
     top: 0em;
     z-index: 1;
     transition: all 0.5s ease;
-    box-shadow: inset 5px 0px #24135a;
+    box-shadow: inset 5px 0px ${({ theme }) => theme.primaryDark};
+    opacity: 0; /* Inicialmente invisible */
   }
 
   #whitefilter {
@@ -244,53 +416,51 @@ const StyledWrapper = styled.div`
     position: absolute;
     z-index: 2;
     border-top-right-radius: 1.25em;
-    box-shadow: 35px -35px 0px -1px white;
+    box-shadow: 35px -35px 0px -1px ${({ theme }) => theme.formBg};
   }
 
   ::placeholder {
-    color: #6041bf;
+    color: ${({ theme }) => theme.placeholder};
     font-weight: bold;
   }
 
-  /* --- ANIMATION FIX --- */
-
-  #name-area:hover ~ #background-color { height: 4em; transform: translateY(3.5em); }
-  #email-area:hover ~ #background-color { height: 4em; transform: translateY(8.5em); }
-  #birthdate-area:hover ~ #background-color { height: 4em; transform: translateY(13.5em); }
-  #image-area:hover ~ #background-color { height: 10em; transform: translateY(18.5em); }
-  #submit-area:hover ~ #background-color { height: 4em; transform: translateY(30em); }
+  #name-area:hover ~ #moving-bg { opacity: 1; height: 4em; transform: translateY(3.5em); }
+  #email-area:hover ~ #moving-bg { opacity: 1; height: 4em; transform: translateY(8.5em); }
+  #birthdate-area:hover ~ #moving-bg { opacity: 1; height: 4em; transform: translateY(13.5em); }
+  #image-area:hover ~ #moving-bg { opacity: 1; height: 10em; transform: translateY(18.5em); }
+  #submit-area:hover ~ #moving-bg { opacity: 1; height: 4em; transform: translateY(30em); }
 
   #name-area:hover input,
   #email-area:hover input,
   #birthdate-area:hover input {
-    color: white;
-    border: 2px solid white;
-    background-color: #6041bf;
+    color: ${({ theme }) => theme.hover.inputText};
+    border: 2px solid ${({ theme }) => theme.hover.borderColor};
+    background-color: ${({ theme }) => theme.hover.inputBg};
     height: 3em;
   }
   
   #image-area:hover label {
-    background-color: #6041bf;
-    color: white;
-    border-color: white;
+    background-color: ${({ theme }) => theme.hover.inputBg};
+    color: ${({ theme }) => theme.hover.inputText};
+    border-color: ${({ theme }) => theme.hover.borderColor};
   }
 
-  #submit-area:hover button {
-    border: 2px solid white;
-    background-color: #6041bf;
+  #submit-area:hover button:not(:disabled) {
+    border: 2px solid ${({ theme }) => theme.hover.borderColor};
+    background-color: ${({ theme }) => theme.hover.inputBg};
     height: 3em;
   }
 
   #submit-area button:active {
-    color: #6041bf;
-    background-color: white;
+    color: ${({ theme }) => theme.hover.inputBg};
+    background-color: ${({ theme }) => theme.hover.inputText};
     width: 90%;
   }
 
   #name-area:hover ::placeholder,
   #email-area:hover ::placeholder,
   #birthdate-area:hover ::placeholder {
-    color: white;
+    color: ${({ theme }) => theme.hover.inputText};
   }
 `;
 
