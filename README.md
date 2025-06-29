@@ -136,18 +136,15 @@ serve -s dist
 - Asegurarse de tener todas las dependencias instaladas
 - Reinstalar dependencias si es necesario: `pip install -r requirements.txt`
 
-## 🤝 Contribución
+## 🤝 Equipo EASYCODE
 
-1. Hacer fork del repositorio
-2. Crear una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Hacer commit de tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Hacer push a la rama (`git push origin feature/AmazingFeature`)
-5. Abrir un Pull Request
+* Sebastian Guarachi Aguilar
+* Jose Alfredo Zambrana Sanchez
+* Leandro Joe Jaldin Gutierrez
+* Kevin Mamani Condori
+* Leandro Emiliano Miranda Roman
 
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-## ✉️ Contacto
-
-¿Preguntas o comentarios? Por favor abre un issue en el repositorio.
